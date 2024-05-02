@@ -1,0 +1,41 @@
+//stepper motor code
+#include<reg51.h>
+#define stp_port P1
+#define dly_cnt 10
+#define steps 512
+void delay(unsigned int time)
+{
+unsigned int i,j;
+for(i=0;i<time;i++)
+for(j=0;j<275;j++);
+}
+void main()
+{
+unsigned int i;
+while(1)
+{
+for(i=0;i<steps;i++)
+{
+stp_port=0x03;
+delay(dly_cnt);
+stp_port=0x06;
+delay(dly_cnt);
+stp_port=0x0C;
+delay(dly_cnt);
+stp_port=0x09;
+delay(dly_cnt);
+}
+for(i=0;i<steps;i++)
+{
+stp_port=0x09;
+delay(dly_cnt);
+stp_port=0x0C;
+
+delay(dly_cnt);
+stp_port=0x06;
+delay(dly_cnt);
+stp_port=0x03;
+delay(dly_cnt);
+}
+}
+}
