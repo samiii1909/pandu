@@ -1,0 +1,67 @@
+#include<reg51.h>
+#include"lcd_func.c"
+void main(){
+unsigned char msg1[]="ES",msg2[]="is",msg3[]="intresting";
+lcd_init();//initialize the lcd
+lcd_cmd(0x80);//two lines and 5*7 matrix
+disp_string(msg1);//display c1 string
+lcd_delay(40);//call delay function
+
+lcd_cmd(0x84);//two lines and 5*7 matrix
+disp_string(msg2);//display c2 string
+lcd_delay(40);//call delay function
+
+lcd_cmd(0xC2);//display on 2nd row from 3rd column
+disp_string(msg3);//display c3 string
+lcd_delay(40);//call delay function
+//lcd_cmd(0x02); for reverse display
+while(1);
+}
+
+Code_2 :
+sbit rs=P3^2;//register select pin connected to P3.2
+sbit en=P3^3;//enable pin connected to P3.3
+//RD/WR pin connected to ground
+void lcd_delay(unsigned int time )//definition of delay function
+{
+int i,j;
+for(i=0;i<275;i++)
+for(j=0;j<time;j++);
+
+}
+void lcd_cmd(unsigned int command )//function is called for command
+{
+rs=0;//set rs=0 for sending command to lcd
+P0 =command;//making P0 equal to command
+en=1;//en high to low pulse on enable to latch
+lcd_delay(40);// call delay func
+en=0;//en low
+}
+void lcd_data(unsigned char dat)//called when data is to be sent
+{
+rs=1;//set rs=1 for sending command to lcd
+P0=dat;//making P0 equal to data
+en=1;//en high to low pulse on enable to latch
+lcd_delay(40);// call delay func
+en=0;//en low
+}
+//LCD initialises func
+void lcd_init(void){
+rs=0;//make rs pin as output pin
+en=0;//make en pin as output pin
+P0=0;//make port 0 as output port
+lcd_cmd(0x01);//clear display screen
+lcd_delay(40);
+lcd_cmd(0x0E);//display on cursor on
+lcd_delay(40);
+lcd_cmd(0x38);// two lines and 5*7 matrix
+lcd_delay(40);
+}
+void disp_string(unsigned char *ptr){
+unsigned char i=0;
+while(ptr[i]!='\0'){
+lcd_data(ptr[i]);
+lcd_delay(1);
+i++;
+}
+}
