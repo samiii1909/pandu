@@ -1,0 +1,38 @@
+#include<reg51.h>
+sbit SEL_A=P1^0;
+sbit SEL_B=P1^1;
+sbit SEL_C=P1^2;
+sbit ALE=P1^3;
+sbit START=P1^4;
+sbit EOC=P1^5;
+sbit OE=P1^6;
+void delay(unsigned int time)
+{
+int i,j;
+for(i=0;i<100;i++)
+for(j=0;j<time;j++);
+}
+void ADC_read()
+{
+SEL_A=1;
+SEL_B=SEL_C=1;
+ALE=1;
+START=1;
+ALE=0;
+START=0;
+
+while(EOC==0);
+OE=1;
+}
+void main()
+{
+ALE=0;
+START=0;
+OE=0;
+while(1)
+{
+ADC_read();
+P0=P2;
+delay(100);
+}
+}
