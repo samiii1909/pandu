@@ -1,0 +1,35 @@
+#include<reg51.h>
+sbit SW4=P0^0;
+sbit SW5=P0^1;
+sbit relay=P0^4;
+sbit buzzer=P0^5;
+void delay(unsigned char time)
+{
+unsigned int i,j;
+for(i=0;i<time;i++)
+{
+for(j=0;j<200;j++);
+}
+}
+void main()
+{
+while(SW4==0)
+{
+buzzer=0;
+P1=0XF0;
+delay(1000);
+buzzer=1;
+P1=0X00;
+delay(1000);
+}
+while(SW5==0)
+{
+relay=0;
+P1=0XFF;
+delay(1000);
+relay=1;
+P1=0X01;
+delay(1000);
+}
+}
+
