@@ -1,0 +1,13 @@
+#include<reg51.h>
+void main(){
+while(1){
+int i;
+for(i=0;i<256;i++)
+{
+P0=i;
+}
+for(i=255;i>0;i--){
+P0=i;
+}
+}
+}
